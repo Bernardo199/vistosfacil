@@ -1,0 +1,4 @@
+@* Admin/ArticleEdit.cshtml *@
+@model VistosFacil.Core.Entities.Article
+@{ Layout = "_AdminLayout"; ViewData["Title"] = "Editar Artigo"; }
+@await Html.PartialAsync("ArticleCreate", Model)

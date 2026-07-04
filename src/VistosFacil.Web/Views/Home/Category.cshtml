@@ -1,0 +1,42 @@
+@model CategoryViewModel
+@{
+    ViewData["Title"] = Model.Category.Name;
+    ViewData["Description"] = $"Guias sobre {Model.Category.Name} — tudo o que precisa de saber sobre vistos e imigração.";
+    ViewData["GoogleAnalyticsId"] = Model.GoogleAnalyticsId;
+}
+
+<section style="background:linear-gradient(135deg,var(--azul) 0%,#154360 100%);color:#fff;padding:48px 0 40px;">
+  <div class="wrap">
+    <div style="font-size:3rem;margin-bottom:12px;">@Model.Category.Emoji</div>
+    <h1 style="color:#fff;font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:10px;">@Model.Category.Name</h1>
+    <p style="color:#AED6F1;font-size:1rem;">Todos os guias sobre @Model.Category.Name</p>
+  </div>
+</section>
+
+<main style="padding:48px 0;">
+  <div class="wrap">
+    @if (Model.Articles.Any())
+    {
+        <div class="grid-3">
+          @foreach (var a in Model.Articles)
+          {
+              <article class="card @a.Category.ColorClass">
+                  <span class="tag">@a.Category.TagLabel</span>
+                  <h3><a href="/artigo/@a.Slug" style="text-decoration:none;color:inherit;">@a.Title</a></h3>
+                  <p>@a.Summary</p>
+                  <span class="meta">@a.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+              </article>
+          }
+        </div>
+    }
+    else
+    {
+        <p style="color:#888;padding:24px 0;">Nenhum artigo nesta categoria ainda.</p>
+    }
+
+    <div style="margin-top:32px;">
+      <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;
+         letter-spacing:.05em;color:var(--azul-claro);">← Voltar a todos os guias</a>
+    </div>
+  </div>
+</main>

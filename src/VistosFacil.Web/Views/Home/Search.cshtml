@@ -1,0 +1,40 @@
+@model SearchViewModel
+@{ ViewData["Title"] = "Pesquisa — " + Model.Query; }
+
+<main style="padding:48px 0;">
+  <div class="wrap">
+    <div style="margin-bottom:36px;">
+      <h1 style="font-size:1.8rem;margin-bottom:20px;">Pesquisar guias</h1>
+      <form action="/pesquisa" method="get" style="display:flex;gap:12px;max-width:600px;">
+        <input name="q" type="search" value="@Model.Query" placeholder="ex: visto americano, autorização residência..."
+               style="flex:1;padding:13px 16px;border:1.5px solid #D0D5DD;border-radius:8px;font-size:1rem;">
+        <button type="submit" class="btn btn-primary" style="background:var(--azul);">Pesquisar</button>
+      </form>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Query))
+    {
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#888;margin-bottom:24px;">
+            @Model.Results.Count resultado(s) para "<strong>@Model.Query</strong>"
+        </p>
+        @if (Model.Results.Any())
+        {
+            <div class="grid-3">
+              @foreach (var a in Model.Results)
+              {
+                  <article class="card @a.Category.ColorClass">
+                      <span class="tag">@a.Category.TagLabel</span>
+                      <h3><a href="/artigo/@a.Slug" style="text-decoration:none;color:inherit;">@a.Title</a></h3>
+                      <p>@a.Summary</p>
+                      <span class="meta">@a.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+                  </article>
+              }
+            </div>
+        }
+        else
+        {
+            <p>Nenhum resultado. Tenta palavras diferentes.</p>
+        }
+    }
+  </div>
+</main>

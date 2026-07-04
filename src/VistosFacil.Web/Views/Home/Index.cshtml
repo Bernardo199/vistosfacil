@@ -1,0 +1,170 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = null;
+    ViewData["GoogleAnalyticsId"] = Model.GoogleAnalyticsId;
+}
+
+@if (!string.IsNullOrEmpty(Model.AdSenseClient) && !Model.AdSenseClient.Contains("XXXXX"))
+{
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=@Model.AdSenseClient" crossorigin="anonymous"></script>
+}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>@Html.Raw(Model.HeroTitle.Replace("\n", "<br>"))</h1>
+      <p class="lead">@Model.HeroSubtitle</p>
+      <div class="hero-btns">
+        <a href="/categoria/vistos-portugal" class="btn btn-primary">🇵🇹 Vistos Portugal</a>
+        <a href="/categoria/vistos-eua" class="btn btn-secondary">🇺🇸 Vistos EUA</a>
+        <a href="/pesquisa" class="btn btn-ghost">Pesquisar guias</a>
+      </div>
+    </div>
+    <div>
+      <!-- Estatísticas visuais -->
+      <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:28px;backdrop-filter:blur(8px);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div style="text-align:center;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:700;color:#F9E79F;display:block;">180+</span>
+            <span style="font-size:.82rem;color:#AED6F1;">países cobertos</span>
+          </div>
+          <div style="text-align:center;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:700;color:#A9DFBF;display:block;">6</span>
+            <span style="font-size:.82rem;color:#AED6F1;">categorias</span>
+          </div>
+          <div style="text-align:center;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:700;color:#F9E79F;display:block;">PT</span>
+            <span style="font-size:.82rem;color:#AED6F1;">em português</span>
+          </div>
+          <div style="text-align:center;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:700;color:#A9DFBF;display:block;">✓</span>
+            <span style="font-size:.82rem;color:#AED6F1;">actualizado 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section class="section" style="background:#fff;padding:40px 0;">
+  <div class="wrap">
+    <div class="cat-grid">
+      @foreach (var cat in Model.Categories)
+      {
+          <a href="/categoria/@cat.Slug" class="cat-item">
+              <span class="icon">@cat.Emoji</span>
+              <div>
+                  <h3>@cat.Name</h3>
+                  <p>Ver guias →</p>
+              </div>
+          </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ARTIGOS EM DESTAQUE -->
+@if (Model.FeaturedArticles.Any())
+{
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">EM DESTAQUE</span>
+      <h2>Guias essenciais</h2>
+      <p>Os artigos mais importantes para quem quer imigrar.</p>
+    </div>
+    <div class="grid-3">
+      @foreach (var a in Model.FeaturedArticles)
+      {
+          <article class="card @a.Category.ColorClass">
+              <span class="tag">@a.Category.TagLabel</span>
+              <h3><a href="/artigo/@a.Slug" style="text-decoration:none;color:inherit;">@a.Title</a></h3>
+              <p>@a.Summary</p>
+              <span class="meta">@a.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+          </article>
+      }
+    </div>
+  </div>
+</section>
+}
+
+<!-- AD SLOT -->
+<div class="wrap">
+  <div class="ad-slot">ESPAÇO PUBLICITÁRIO — configurar Google AdSense nas definições</div>
+</div>
+
+<!-- TODOS OS ARTIGOS -->
+@if (Model.AllArticles.Any())
+{
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">BIBLIOTECA</span>
+      <h2>@Model.TrendingTitle</h2>
+    </div>
+    <div class="grid-3">
+      @foreach (var a in Model.AllArticles)
+      {
+          <article class="card @a.Category.ColorClass">
+              <span class="tag">@a.Category.TagLabel</span>
+              <h3><a href="/artigo/@a.Slug" style="text-decoration:none;color:inherit;">@a.Title</a></h3>
+              <p>@a.Summary</p>
+              <span class="meta">@a.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+          </article>
+      }
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:36px;">
+            @if (Model.CurrentPage > 1)
+            { <a href="/?page=@(Model.CurrentPage-1)" class="btn btn-primary" style="background:var(--azul);">← Anterior</a> }
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:.82rem;padding:13px 0;color:#888;">
+                Página @Model.CurrentPage de @Model.TotalPages
+            </span>
+            @if (Model.CurrentPage < Model.TotalPages)
+            { <a href="/?page=@(Model.CurrentPage+1)" class="btn btn-primary">Seguinte →</a> }
+        </div>
+    }
+  </div>
+</section>
+}
+
+<!-- NEWSLETTER -->
+<section class="section" style="padding:40px 0 64px;">
+  <div class="wrap">
+    <div class="newsletter">
+      <div>
+        <h3>📬 Receba actualizações de vistos por email</h3>
+        <p>Alertas quando as regras mudam, novos guias e datas importantes.</p>
+      </div>
+      <form id="newsletter-form">
+        <input id="newsletter-email" type="email" placeholder="o.seu@email.com" required>
+        <button type="submit">Subscrever</button>
+      </form>
+    </div>
+    <p id="newsletter-msg" style="display:none;margin-top:12px;text-align:center;font-size:.9rem;"></p>
+  </div>
+</section>
+
+@section Scripts {
+<script>
+document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('newsletter-email').value;
+    const res = await fetch('/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}`
+    });
+    const data = await res.json();
+    const msg = document.getElementById('newsletter-msg');
+    msg.style.display = 'block';
+    msg.style.color = data.success ? '#1E8449' : '#C0392B';
+    msg.textContent = data.message;
+    if (data.success) this.reset();
+});
+</script>
+}
