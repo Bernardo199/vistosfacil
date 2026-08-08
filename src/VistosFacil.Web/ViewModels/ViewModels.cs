@@ -4,12 +4,8 @@ namespace VistosFacil.Web.ViewModels;
 
 public class HomeViewModel
 {
-    public string HeroTitle { get; set; } = "";
-    public string HeroSubtitle { get; set; } = "";
-    public string SiteName { get; set; } = "VistosFácil";
-    public string TrendingTitle { get; set; } = "";
+    public string TrendingTitle { get; set; } = "Guias mais procurados";
     public string AdSenseClient { get; set; } = "";
-    public string AdSenseSlot1 { get; set; } = "";
     public string GoogleAnalyticsId { get; set; } = "";
     public List<Article> FeaturedArticles { get; set; } = new();
     public List<Article> AllArticles { get; set; } = new();
@@ -22,7 +18,6 @@ public class ArticleViewModel
 {
     public Article Article { get; set; } = null!;
     public string AdSenseClient { get; set; } = "";
-    public string AdSenseSlot1 { get; set; } = "";
     public string GoogleAnalyticsId { get; set; } = "";
 }
 

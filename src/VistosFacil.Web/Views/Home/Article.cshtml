@@ -1,56 +1,83 @@
-@model ArticleViewModel
+@model VistosFacil.Web.ViewModels.ArticleViewModel
 @{
     ViewData["Title"] = Model.Article.MetaTitle ?? Model.Article.Title;
     ViewData["Description"] = Model.Article.MetaDescription ?? Model.Article.Summary;
-    ViewData["GoogleAnalyticsId"] = Model.GoogleAnalyticsId;
+    var emoji = Model.Article.Category?.Slug switch { "vistos-portugal"=>"🇵🇹","vistos-eua"=>"🇺🇸","vistos-schengen"=>"🇪🇺","autorizacao-residencia"=>"🏠","nacionalidade"=>"📜","vistos-brasil"=>"🇧🇷",_=>"📋" };
 }
-
-<main style="padding:48px 0;">
-  <div class="wrap" style="max-width:780px;">
-
-    <div style="margin-bottom:8px;">
-      <a href="/categoria/@Model.Article.Category?.Slug"
-         style="display:inline-block;background:var(--azul-claro);color:#fff;font-family:'IBM Plex Mono',monospace;
-                font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;padding:4px 10px;border-radius:4px;
-                text-decoration:none;margin-bottom:16px;">
-        @Model.Article.Category?.Emoji @Model.Article.Category?.TagLabel
-      </a>
-    </div>
-
-    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;margin-bottom:16px;color:var(--azul);">
-      @Model.Article.Title
-    </h1>
-    <p style="font-size:1.1rem;color:#555;margin-bottom:8px;">@Model.Article.Summary</p>
-    <p style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#999;margin-bottom:28px;">
-      @Model.Article.CreatedAt.ToString("d 'de' MMMM 'de' yyyy") · @Model.Article.ViewCount visualizações
-    </p>
-
-    @if (!string.IsNullOrEmpty(Model.Article.ImageUrl))
-    {
-        <img src="@Model.Article.ImageUrl" alt="@Model.Article.Title"
-             style="width:100%;border-radius:12px;margin-bottom:32px;object-fit:cover;max-height:400px;">
-    }
-
-    <!-- Caixa de aviso legal -->
-    <div style="background:#EBF5FB;border:1px solid #AED6F1;border-radius:8px;padding:14px 18px;
-                margin-bottom:28px;font-size:.88rem;color:#1B4F72;">
-      ⚠️ <strong>Aviso:</strong> Este guia é informativo. Verifique sempre as informações nas fontes oficiais
-      (SEF/AIMA, Embaixadas, VFS Global) antes de tomar decisões.
-    </div>
-
-    <div class="ad-slot" style="margin-bottom:28px;">ESPAÇO PUBLICITÁRIO</div>
-
-    <div class="article-body">
-      @Html.Raw(Model.Article.Body)
-    </div>
-
-    <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--cinza-2);
-                display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-      <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;
-         letter-spacing:.05em;color:var(--azul-claro);">← Voltar aos guias</a>
-      <a href="/categoria/@Model.Article.Category?.Slug"
-         style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;
-         letter-spacing:.05em;color:var(--verde);">Ver mais em @Model.Article.Category?.Name →</a>
+<main style="padding:48px 0 64px;">
+  <div class="wrap">
+    <div class="content-with-sidebar">
+      <article>
+        <div class="breadcrumb">
+          <a href="/">Início</a><span class="sep">›</span>
+          <a href="/categoria/@Model.Article.Category?.Slug">@Model.Article.Category?.Name</a><span class="sep">›</span>
+          <span>@Model.Article.Title</span>
+        </div>
+        <span class="card-tag tag-@(Model.Article.Category?.Slug?.Split('-')[0]??"guia")" style="margin-bottom:16px;display:inline-block;">@emoji @Model.Article.Category?.TagLabel</span>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;margin-bottom:16px;">@Model.Article.Title</h1>
+        <p style="font-size:1.1rem;color:var(--texto-2);margin-bottom:16px;line-height:1.7;">@Model.Article.Summary</p>
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid var(--cinza-2);border-bottom:1px solid var(--cinza-2);margin-bottom:32px;flex-wrap:wrap;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--texto-3);">📅 @Model.Article.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--texto-3);">👁 @Model.Article.ViewCount leituras</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--verde);">✓ Actualizado 2026</span>
+        </div>
+        <div class="info-box info-yellow" style="margin-bottom:28px;">⚠️ <strong>Aviso:</strong> Este guia é informativo. Verifique sempre nas fontes oficiais antes de tomar decisões de imigração.</div>
+        <div class="ad-slot">ESPAÇO PUBLICITÁRIO</div>
+        <div class="article-body">@Html.Raw(Model.Article.Body)</div>
+        <div style="margin-top:40px;padding:24px;background:var(--cinza);border-radius:var(--radius-lg);text-align:center;">
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--texto-3);margin-bottom:12px;">Partilha este guia</p>
+          <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://vistosfacil.com/artigo/@Model.Article.Slug" target="_blank" class="btn btn-primary" style="font-size:.75rem;padding:10px 18px;">📘 Facebook</a>
+            <a href="https://wa.me/?text=https://vistosfacil.com/artigo/@Model.Article.Slug" target="_blank" class="btn" style="background:#25D366;color:#fff;font-size:.75rem;padding:10px 18px;">💬 WhatsApp</a>
+          </div>
+        </div>
+        <div style="margin-top:24px;"><a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--azul-claro);">← Voltar aos guias</a></div>
+      </article>
+      <aside>
+        <div class="sidebar-widget">
+          <h4>📚 Guias relacionados</h4>
+          <ul style="list-style:none;">
+            <li style="padding:10px 0;border-bottom:1px solid var(--cinza-2);"><a href="/artigo/visto-d7-portugal-guia-completo-2026" style="font-size:.9rem;color:var(--azul);font-weight:600;">Visto D7 — Rendimentos próprios</a></li>
+            <li style="padding:10px 0;border-bottom:1px solid var(--cinza-2);"><a href="/artigo/autorizacao-residencia-portugal-2026-guia-cabo-verdianos" style="font-size:.9rem;color:var(--azul);font-weight:600;">Autorização de Residência</a></li>
+            <li style="padding:10px 0;border-bottom:1px solid var(--cinza-2);"><a href="/artigo/nacionalidade-portuguesa-quem-tem-direito-como-pedir" style="font-size:.9rem;color:var(--azul);font-weight:600;">Nacionalidade portuguesa</a></li>
+            <li style="padding:10px 0;"><a href="/artigo/visto-americano-cabo-verdiano-guia-2026" style="font-size:.9rem;color:var(--azul);font-weight:600;">Visto americano</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-widget">
+          <h4>✅ Documentos base</h4>
+          <ul class="checklist">
+            <li>Passaporte válido (+6 meses)</li>
+            <li>Formulário de visto preenchido</li>
+            <li>Fotografias tipo passe</li>
+            <li>Comprovativo financeiro</li>
+            <li>Comprovativo de alojamento</li>
+            <li>Seguro de saúde</li>
+            <li>Registo criminal apostilado</li>
+          </ul>
+          <a href="/guias/documentos" class="btn btn-outline" style="margin-top:16px;font-size:.75rem;padding:10px 16px;display:inline-block;">Ver lista completa →</a>
+        </div>
+        <div class="sidebar-widget" style="background:linear-gradient(135deg,var(--azul),var(--azul-claro));color:#fff;">
+          <h4 style="color:rgba(255,255,255,.7);">📬 Alertas gratuitos</h4>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.85);margin-bottom:16px;">Recebe alertas quando as regras de vistos mudam.</p>
+          <input type="email" id="sidebar-email" placeholder="o.seu@email.com" style="width:100%;padding:10px 14px;border-radius:8px;border:none;font-size:.9rem;margin-bottom:10px;box-sizing:border-box;">
+          <button onclick="sidebarSubscribe()" class="newsletter-btn" style="width:100%;">Subscrever</button>
+          <p id="sidebar-msg" style="display:none;font-size:.8rem;margin-top:8px;text-align:center;color:rgba(255,255,255,.9);"></p>
+        </div>
+        <div class="ad-slot">PUBLICIDADE</div>
+      </aside>
     </div>
   </div>
 </main>
+@section Scripts {
+<script>
+async function sidebarSubscribe() {
+  const email = document.getElementById('sidebar-email').value;
+  if (!email) return;
+  const res = await fetch('/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `email=${encodeURIComponent(email)}` });
+  const data = await res.json();
+  const msg = document.getElementById('sidebar-msg');
+  msg.style.display = 'block';
+  msg.textContent = data.message;
+}
+</script>
+}

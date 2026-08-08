@@ -43,19 +43,14 @@ public class AdminController : Controller
     {
         var validUser = _appConfig["AdminCredentials:Username"] ?? "admin";
         var validPass = _appConfig["AdminCredentials:Password"] ?? "admin";
-
         if (username != validUser || password != validPass)
         { ViewBag.Error = "Credenciais inválidas."; return View(); }
 
-        var claims = new List<Claim> {
-            new(ClaimTypes.Name, username),
-            new(ClaimTypes.Role, "Admin")
-        };
+        var claims = new List<Claim> { new(ClaimTypes.Name, username), new(ClaimTypes.Role, "Admin") };
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(identity),
             new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8) });
-
         return Redirect("/admin");
     }
 

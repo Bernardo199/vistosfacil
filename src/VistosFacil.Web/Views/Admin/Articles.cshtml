@@ -17,10 +17,10 @@
       <td style="font-family:'IBM Plex Mono',monospace;font-size:.82rem;">@a.ViewCount</td>
       <td style="font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:#888;">@a.CreatedAt.ToString("dd/MM/yy")</td>
       <td>
-        <a href="/admin/artigos/@a.Id/editar" class="btn-admin btn-secondary" style="font-size:.7rem;padding:6px 12px;margin-right:6px;">Editar</a>
+        <a href="/admin/artigos/@a.Id/editar" class="btn-admin btn-secondary" style="font-size:.7rem;padding:6px 10px;margin-right:4px;">Editar</a>
         <form method="post" action="/admin/artigos/@a.Id/apagar" style="display:inline;" onsubmit="return confirm('Apagar?')">
           @Html.AntiForgeryToken()
-          <button type="submit" class="btn-admin btn-danger" style="font-size:.7rem;padding:6px 12px;">Apagar</button>
+          <button type="submit" class="btn-admin btn-danger" style="font-size:.7rem;padding:6px 10px;">Apagar</button>
         </form>
       </td>
     </tr>

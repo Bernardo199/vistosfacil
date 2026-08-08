@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VistosFacil.Infrastructure.Repositories;
 using VistosFacil.Web.ViewModels;
+using VistosFacil.Core.Entities;
 
 namespace VistosFacil.Web.Controllers;
 
@@ -25,14 +26,10 @@ public class HomeController : Controller
         var all = await _articles.GetPublishedAsync(page, 9);
         var total = await _articles.GetTotalCountAsync();
         var categories = await _categories.GetAllAsync();
-
         var vm = new HomeViewModel
         {
-            HeroTitle = configs.GetValueOrDefault("hero_title", "O seu guia de\nimigração em português"),
-            HeroSubtitle = configs.GetValueOrDefault("hero_subtitle", "Tudo sobre vistos, autorizações de residência e nacionalidade."),
             TrendingTitle = configs.GetValueOrDefault("trending_title", "Guias mais procurados"),
             AdSenseClient = configs.GetValueOrDefault("adsense_client", ""),
-            AdSenseSlot1 = configs.GetValueOrDefault("adsense_slot_1", ""),
             GoogleAnalyticsId = configs.GetValueOrDefault("google_analytics_id", ""),
             FeaturedArticles = featured.ToList(),
             AllArticles = all.ToList(),
@@ -40,7 +37,6 @@ public class HomeController : Controller
             CurrentPage = page,
             TotalPages = (int)Math.Ceiling(total / 9.0)
         };
-
         return View(vm);
     }
 
@@ -48,13 +44,12 @@ public class HomeController : Controller
     {
         var article = await _articles.GetBySlugAsync(slug);
         if (article == null) return NotFound();
-        _ = _articles.IncrementViewsAsync(article.Id);
+        await _articles.IncrementViewsAsync(article.Id);
         var configs = await _config.GetAllAsync();
         return View(new ArticleViewModel
         {
             Article = article,
             AdSenseClient = configs.GetValueOrDefault("adsense_client", ""),
-            AdSenseSlot1 = configs.GetValueOrDefault("adsense_slot_1", ""),
             GoogleAnalyticsId = configs.GetValueOrDefault("google_analytics_id", "")
         });
     }
@@ -74,6 +69,56 @@ public class HomeController : Controller
         });
     }
 
+    [Route("europa/{pais}/{tipo}")]
+    public IActionResult EuropaCategoria(string pais, string tipo)
+    {
+        var slugMap = new Dictionary<string,string>
+        {
+            {"portugal/residencia","autorizacao-residencia"},
+            {"portugal/trabalho","vistos-portugal"},
+            {"portugal/turismo","vistos-portugal"},
+            {"portugal/estudo","vistos-portugal"},
+            {"portugal/d7","vistos-portugal"},
+            {"portugal/nomade-digital","vistos-portugal"},
+            {"portugal/nacionalidade","nacionalidade"},
+            {"schengen/turismo","vistos-schengen"},
+            {"schengen/estudo","vistos-schengen"},
+            {"schengen/trabalho","vistos-schengen"},
+            {"reino-unido/turismo","vistos-schengen"},
+            {"reino-unido/trabalho","vistos-schengen"},
+        };
+        var slug = slugMap.GetValueOrDefault($"{pais}/{tipo}", "vistos-portugal");
+        return RedirectToAction("Category", new { slug });
+    }
+
+    [Route("eua/{tipo}")] public IActionResult EuaCategoria(string tipo) => RedirectToAction("Category", new { slug="vistos-eua" });
+    [Route("europa")] public IActionResult Europa() => RedirectToAction("Category", new { slug="vistos-portugal" });
+    [Route("eua")] public IActionResult Eua() => RedirectToAction("Category", new { slug="vistos-eua" });
+    [Route("guias")] public IActionResult Guias() => RedirectToAction("Index");
+    [Route("guias/{tipo}")] public IActionResult GuiasTipo(string tipo) => RedirectToAction("Index");
+
+    [Route("blog")]
+    public async Task<IActionResult> Blog(int page = 1)
+    {
+        var all = await _articles.GetPublishedAsync(page, 12);
+        var total = await _articles.GetTotalCountAsync();
+        var configs = await _config.GetAllAsync();
+        var vm = new HomeViewModel
+        {
+            TrendingTitle = "Todos os artigos",
+            AllArticles = all.ToList(),
+            Categories = (await _categories.GetAllAsync()).ToList(),
+            CurrentPage = page,
+            TotalPages = (int)Math.Ceiling(total / 12.0),
+            GoogleAnalyticsId = configs.GetValueOrDefault("google_analytics_id", "")
+        };
+        return View("Index", vm);
+    }
+
+    [Route("checklist")] public IActionResult Checklist() => View();
+    [Route("prazos")] public IActionResult Prazos() => View();
+    [Route("calculadora-custos")] public IActionResult CalculadoraCustos() => View();
+
     [Route("pesquisa")]
     public async Task<IActionResult> Search(string q)
     {
@@ -91,15 +136,9 @@ public class HomeController : Controller
         return Json(new { success = ok, message = ok ? "Subscrito com sucesso!" : "Email já registado." });
     }
 
-    [Route("privacidade")]
-    public IActionResult Privacidade() => View();
-
-    [Route("termos")]
-    public IActionResult Termos() => View();
-
-    [Route("contacto")]
-    public IActionResult Contacto() => View();
-
-    [Route("erro")]
-    public IActionResult Error() => View();
+    [Route("sobre")] public IActionResult Sobre() => View();
+    [Route("privacidade")] public IActionResult Privacidade() => View();
+    [Route("termos")] public IActionResult Termos() => View();
+    [Route("contacto")] public IActionResult Contacto() => View();
+    [Route("erro")] public IActionResult Error() => View();
 }

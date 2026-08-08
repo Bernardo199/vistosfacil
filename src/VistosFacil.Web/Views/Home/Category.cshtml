@@ -1,42 +1,46 @@
-@model CategoryViewModel
+@model VistosFacil.Web.ViewModels.CategoryViewModel
 @{
     ViewData["Title"] = Model.Category.Name;
-    ViewData["Description"] = $"Guias sobre {Model.Category.Name} — tudo o que precisa de saber sobre vistos e imigração.";
-    ViewData["GoogleAnalyticsId"] = Model.GoogleAnalyticsId;
+    ViewData["Description"] = $"Guias sobre {Model.Category.Name} — informação actualizada 2026 para cabo-verdianos e lusófonos.";
+    var emoji = Model.Category.Slug switch { "vistos-portugal"=>"🇵🇹","vistos-eua"=>"🇺🇸","vistos-schengen"=>"🇪🇺","autorizacao-residencia"=>"🏠","nacionalidade"=>"📜","vistos-brasil"=>"🇧🇷",_=>"📋" };
 }
-
-<section style="background:linear-gradient(135deg,var(--azul) 0%,#154360 100%);color:#fff;padding:48px 0 40px;">
+<section style="background:linear-gradient(135deg,#0D2B3E,#1B4F72);padding:48px 0 40px;color:#fff;">
   <div class="wrap">
-    <div style="font-size:3rem;margin-bottom:12px;">@Model.Category.Emoji</div>
+    <div class="breadcrumb" style="color:rgba(255,255,255,.6);">
+      <a href="/" style="color:rgba(255,255,255,.7);">Início</a><span class="sep">›</span><span>@Model.Category.Name</span>
+    </div>
+    <div style="font-size:3rem;margin-bottom:12px;">@emoji</div>
     <h1 style="color:#fff;font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:10px;">@Model.Category.Name</h1>
-    <p style="color:#AED6F1;font-size:1rem;">Todos os guias sobre @Model.Category.Name</p>
+    <p style="color:rgba(255,255,255,.8);">@Model.Articles.Count guia(s) disponíveis — actualizado 2026</p>
   </div>
 </section>
-
 <main style="padding:48px 0;">
   <div class="wrap">
     @if (Model.Articles.Any())
     {
-        <div class="grid-3">
-          @foreach (var a in Model.Articles)
-          {
-              <article class="card @a.Category.ColorClass">
-                  <span class="tag">@a.Category.TagLabel</span>
-                  <h3><a href="/artigo/@a.Slug" style="text-decoration:none;color:inherit;">@a.Title</a></h3>
-                  <p>@a.Summary</p>
-                  <span class="meta">@a.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
-              </article>
-          }
-        </div>
+      <div class="grid-3">
+        @foreach (var a in Model.Articles)
+        {
+          <div class="article-card">
+            <div class="article-card-img"><span style="font-size:3rem;">@emoji</span></div>
+            <div class="article-card-body">
+              <span class="card-tag tag-@(a.Category?.Slug?.Split('-')[0]??"guia")">@a.Category?.TagLabel</span>
+              <h3><a href="/artigo/@a.Slug">@a.Title</a></h3>
+              <p>@(a.Summary.Length>110?a.Summary.Substring(0,110)+"...":a.Summary)</p>
+              <div class="card-meta"><span>@a.CreatedAt.ToString("d MMM yyyy")</span></div>
+            </div>
+          </div>
+        }
+      </div>
     }
     else
     {
-        <p style="color:#888;padding:24px 0;">Nenhum artigo nesta categoria ainda.</p>
+      <div style="text-align:center;padding:60px;color:var(--texto-3);">
+        <div style="font-size:3rem;margin-bottom:16px;">📋</div>
+        <p>Nenhum guia nesta categoria ainda. Volta em breve!</p>
+        <a href="/" class="btn btn-primary" style="margin-top:20px;">← Ver todos os guias</a>
+      </div>
     }
-
-    <div style="margin-top:32px;">
-      <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;
-         letter-spacing:.05em;color:var(--azul-claro);">← Voltar a todos os guias</a>
-    </div>
+    <div style="margin-top:32px;"><a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--azul-claro);">← Ver todos os guias</a></div>
   </div>
 </main>

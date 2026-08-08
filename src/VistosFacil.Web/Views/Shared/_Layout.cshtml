@@ -3,81 +3,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@(ViewData["Title"] != null ? ViewData["Title"] + " — VistosFácil" : "VistosFácil — O seu guia de imigração em português")</title>
-<meta name="description" content="@(ViewData["Description"] ?? "Tudo sobre vistos, autorizações de residência e nacionalidade para a diáspora lusófona — explicado de forma simples.")">
-<meta property="og:title" content="@(ViewData["Title"] ?? "VistosFácil")">
-<meta property="og:description" content="@(ViewData["Description"] ?? "O seu guia de imigração em português.")">
+<title>@(ViewData["Title"] != null ? ViewData["Title"] + " — VistosFácil" : "VistosFácil — Guia de Vistos e Imigração em Português")</title>
+<meta name="description" content="@(ViewData["Description"] ?? "Guia completo de vistos para Portugal, EUA, Schengen e mais — explicado em português para cabo-verdianos e lusófonos. Informação actualizada 2026.")">
+<meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="VistosFácil">
+<meta property="og:title" content="@(ViewData["Title"] ?? "VistosFácil")">
+<meta property="og:description" content="@(ViewData["Description"] ?? "Guia de vistos em português.")">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
-
-@if (!string.IsNullOrEmpty(ViewData["GoogleAnalyticsId"]?.ToString()))
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<script type="application/ld+json">
 {
-    var gaId = ViewData["GoogleAnalyticsId"]!.ToString();
-    <script async src="https://www.googletagmanager.com/gtag/js?id=@gaId"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','@gaId');</script>
+  "@@context": "https://schema.org",
+  "@@type": "WebSite",
+  "name": "VistosFácil",
+  "url": "https://vistosfacil.com",
+  "description": "Guia completo de vistos e imigração em português",
+  "potentialAction": {
+    "@@type": "SearchAction",
+    "target": "https://vistosfacil.com/pesquisa?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
 }
+</script>
 </head>
 <body>
 
-<div class="top-stripe"></div>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span>📞 Dúvidas? Consulta os nossos guias gratuitos</span>
+    <div class="topbar-links">
+      <a href="/sobre">Sobre</a>
+      <a href="/contacto">Contacto</a>
+      <a href="/pesquisa">🔍 Pesquisar</a>
+    </div>
+  </div>
+</div>
 
+<!-- HEADER -->
 <header>
-  <div class="nav">
+  <div class="wrap nav-wrap">
     <a href="/" class="logo">
-      🛂 Vistos<span>Fácil</span>
-      <small>O seu guia de imigração</small>
+      <span class="logo-icon">🛂</span>
+      <div>
+        <span class="logo-text">Vistos<strong>Fácil</strong></span>
+        <span class="logo-sub">guia de imigração em português</span>
+      </div>
     </a>
-    <ul>
-      <li><a href="/categoria/vistos-portugal">🇵🇹 Portugal</a></li>
-      <li><a href="/categoria/vistos-eua">🇺🇸 EUA</a></li>
-      <li><a href="/categoria/vistos-schengen">🇪🇺 Schengen</a></li>
-      <li><a href="/categoria/autorizacao-residencia">🏠 Residência</a></li>
-      <li><a href="/pesquisa">Pesquisar</a></li>
-    </ul>
-    <button class="nav-toggle" onclick="document.querySelector('.nav ul').classList.toggle('open')">☰</button>
+
+    <!-- MEGA MENU -->
+    <nav class="main-nav" id="main-nav">
+      <ul class="nav-list">
+
+        <li class="nav-item">
+          <a href="/" class="nav-link">Início</a>
+        </li>
+
+        <li class="nav-item has-mega">
+          <a href="/europa" class="nav-link">🇪🇺 Europa <span class="arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-inner">
+              <div class="mega-col">
+                <div class="mega-flag">🇵🇹</div>
+                <h4>Portugal</h4>
+                <ul>
+                  <li><a href="/europa/portugal/turismo">Visto de Turismo</a></li>
+                  <li><a href="/europa/portugal/estudo">Visto de Estudo</a></li>
+                  <li><a href="/europa/portugal/trabalho">Visto de Trabalho</a></li>
+                  <li><a href="/europa/portugal/residencia">Autorização de Residência</a></li>
+                  <li><a href="/europa/portugal/d7">Visto D7</a></li>
+                  <li><a href="/europa/portugal/nomade-digital">Nómade Digital D8</a></li>
+                  <li><a href="/europa/portugal/nacionalidade">Nacionalidade Portuguesa</a></li>
+                </ul>
+              </div>
+              <div class="mega-col">
+                <div class="mega-flag">🇪🇺</div>
+                <h4>Espaço Schengen</h4>
+                <ul>
+                  <li><a href="/europa/schengen/turismo">Visto Schengen Turismo</a></li>
+                  <li><a href="/europa/schengen/estudo">Visto Schengen Estudo</a></li>
+                  <li><a href="/europa/schengen/trabalho">Visto Schengen Trabalho</a></li>
+                </ul>
+                <div class="mega-flag" style="margin-top:16px;">🇬🇧</div>
+                <h4>Reino Unido</h4>
+                <ul>
+                  <li><a href="/europa/reino-unido/turismo">Visto UK Turismo</a></li>
+                  <li><a href="/europa/reino-unido/trabalho">Visto UK Trabalho</a></li>
+                </ul>
+              </div>
+              <div class="mega-col mega-featured">
+                <h4>⭐ Mais procurados</h4>
+                <a href="/artigo/visto-portugal-2026-novas-regras-aima-guia-completo" class="featured-link">
+                  <span>🆕</span>
+                  <div>
+                    <strong>Visto Portugal 2026</strong>
+                    <span>O que mudou com a AIMA</span>
+                  </div>
+                </a>
+                <a href="/artigo/autorizacao-residencia-portugal-2026-guia-cabo-verdianos" class="featured-link">
+                  <span>📋</span>
+                  <div>
+                    <strong>Autorização Residência</strong>
+                    <span>Guia passo a passo</span>
+                  </div>
+                </a>
+                <a href="/artigo/visto-d7-portugal-guia-completo-2026" class="featured-link">
+                  <span>💰</span>
+                  <div>
+                    <strong>Visto D7</strong>
+                    <span>Rendimentos próprios</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item has-mega">
+          <a href="/eua" class="nav-link">🇺🇸 Estados Unidos <span class="arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-inner">
+              <div class="mega-col">
+                <h4>Vistos EUA</h4>
+                <ul>
+                  <li><a href="/eua/turismo">Visto B1/B2 Turismo</a></li>
+                  <li><a href="/eua/estudo">Visto F1 Estudo</a></li>
+                  <li><a href="/eua/trabalho">Visto H1B Trabalho</a></li>
+                  <li><a href="/eua/imigracao">Green Card</a></li>
+                  <li><a href="/eua/intercambio">Visto J1 Intercâmbio</a></li>
+                </ul>
+              </div>
+              <div class="mega-col mega-featured">
+                <h4>⭐ Destaque</h4>
+                <a href="/artigo/visto-americano-cabo-verdiano-guia-2026" class="featured-link">
+                  <span>🇺🇸</span>
+                  <div>
+                    <strong>Visto Americano</strong>
+                    <span>Guia para cabo-verdianos</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item has-mega">
+          <a href="/guias" class="nav-link">📚 Guias <span class="arrow">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-inner">
+              <div class="mega-col">
+                <h4>Tipos de guia</h4>
+                <ul>
+                  <li><a href="/guias/documentos">📄 Documentos necessários</a></li>
+                  <li><a href="/guias/passo-a-passo">📋 Passo a passo</a></li>
+                  <li><a href="/guias/entrevista">🎤 Como passar na entrevista</a></li>
+                  <li><a href="/guias/custos-prazos">💰 Custos e prazos</a></li>
+                  <li><a href="/guias/recusas-recursos">❌ Recusas e recursos</a></li>
+                </ul>
+              </div>
+              <div class="mega-col mega-featured">
+                <h4>Ferramentas</h4>
+                <a href="/calculadora-custos" class="featured-link">
+                  <span>🧮</span>
+                  <div><strong>Calculadora de custos</strong><span>Quanto vai custar?</span></div>
+                </a>
+                <a href="/checklist" class="featured-link">
+                  <span>✅</span>
+                  <div><strong>Checklist de documentos</strong><span>Não te esqueças de nada</span></div>
+                </a>
+                <a href="/prazos" class="featured-link">
+                  <span>⏱</span>
+                  <div><strong>Prazos actualizados</strong><span>Quanto tempo demora?</span></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a href="/blog" class="nav-link">✍️ Blog</a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
 @RenderBody()
 
+<!-- FOOTER -->
 <footer>
-  <div class="wrap">
-    <div>
-      <span class="logo">🛂 VistosFácil</span>
-      <p>O guia de imigração em português para a diáspora lusófona — vistos, residência e nacionalidade explicados de forma simples.</p>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:16px;">
+        <span class="logo-icon">🛂</span>
+        <div>
+          <span class="logo-text" style="color:#fff;">Vistos<strong>Fácil</strong></span>
+          <span class="logo-sub" style="color:rgba(255,255,255,.6);">guia de imigração</span>
+        </div>
+      </div>
+      <p>O guia de vistos e imigração em português — para cabo-verdianos, brasileiros e todos os lusófonos que querem mover-se pelo mundo com segurança e informação.</p>
+      <div class="footer-social">
+        <a href="#" title="Facebook">📘</a>
+        <a href="#" title="Instagram">📸</a>
+        <a href="#" title="YouTube">▶️</a>
+      </div>
     </div>
+
     <div>
-      <h4>Vistos</h4>
+      <h4>🇪🇺 Europa</h4>
       <ul>
-        <li><a href="/categoria/vistos-portugal">Portugal</a></li>
-        <li><a href="/categoria/vistos-eua">EUA</a></li>
-        <li><a href="/categoria/vistos-schengen">Schengen</a></li>
-        <li><a href="/categoria/vistos-brasil">Brasil</a></li>
+        <li><a href="/europa/portugal/residencia">Residência Portugal</a></li>
+        <li><a href="/europa/portugal/trabalho">Trabalho Portugal</a></li>
+        <li><a href="/europa/portugal/d7">Visto D7</a></li>
+        <li><a href="/europa/portugal/nomade-digital">Nómade Digital</a></li>
+        <li><a href="/europa/portugal/nacionalidade">Nacionalidade</a></li>
+        <li><a href="/europa/schengen/turismo">Visto Schengen</a></li>
       </ul>
     </div>
+
     <div>
-      <h4>Imigração</h4>
+      <h4>🇺🇸 Estados Unidos</h4>
       <ul>
-        <li><a href="/categoria/autorizacao-residencia">Autorização de Residência</a></li>
-        <li><a href="/categoria/nacionalidade">Nacionalidade</a></li>
+        <li><a href="/eua/turismo">Turismo B1/B2</a></li>
+        <li><a href="/eua/estudo">Estudo F1</a></li>
+        <li><a href="/eua/trabalho">Trabalho H1B</a></li>
+        <li><a href="/eua/imigracao">Green Card</a></li>
+      </ul>
+      <h4 style="margin-top:20px;">📚 Guias</h4>
+      <ul>
+        <li><a href="/guias/documentos">Documentos</a></li>
+        <li><a href="/guias/custos-prazos">Custos e prazos</a></li>
+        <li><a href="/guias/recusas-recursos">Recusas e recursos</a></li>
       </ul>
     </div>
+
     <div>
-      <h4>Legal</h4>
+      <h4>VistosFácil</h4>
       <ul>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/sobre">Sobre nós</a></li>
+        <li><a href="/contacto">Contacto</a></li>
         <li><a href="/privacidade">Política de Privacidade</a></li>
         <li><a href="/termos">Termos de Utilização</a></li>
-        <li><a href="/contacto">Contacto</a></li>
       </ul>
+      <div style="margin-top:20px;padding:14px;background:rgba(255,255,255,.05);border-radius:10px;font-size:.82rem;color:rgba(255,255,255,.6);">
+        ⚠️ Conteúdo informativo. Verifique sempre nas fontes oficiais antes de tomar decisões.
+      </div>
     </div>
   </div>
-  <p class="fine">© @DateTime.Now.Year VistosFácil. Conteúdo informativo — verifique sempre as fontes oficiais (SEF, Embaixadas, VFS Global) antes de tomar decisões.</p>
+
+  <div class="footer-bottom">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <p>© @DateTime.Now.Year VistosFácil. Todos os direitos reservados.</p>
+      <p style="font-size:.78rem;color:rgba(255,255,255,.4);">Não somos advogados. Consulte sempre um especialista para o seu caso concreto.</p>
+    </div>
+  </div>
 </footer>
 
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="/js/site.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
